@@ -1,5 +1,5 @@
 dt=$(date '+%d-%m-%Y_%H-%M-%S')
-script log_$dt.txt
+script logs/log_$dt.txt
 
 CUDA_VISIBLE_DEVICES=0,1 python train_semantic_softmax.py \
 --batch_size=8 \
