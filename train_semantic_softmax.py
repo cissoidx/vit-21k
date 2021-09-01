@@ -12,6 +12,7 @@ import torch.nn.parallel
 import torch.optim
 import torch.utils.data.distributed
 from torch.optim import lr_scheduler
+import wandb
 
 from src_files.data_loading.data_loader import create_data_loaders
 from src_files.helper_functions.distributed import print_at_master, to_ddp, num_distrib, setup_distrib
@@ -40,6 +41,7 @@ parser.add_argument("--tree_path", default='./resources/imagenet21k_miil_tree.pt
 
 
 def main():
+    wandb.init(project="vit-pretrain")
     # arguments
     args = parser.parse_args()
 
@@ -93,12 +95,13 @@ def train_21k(model, train_loader, val_loader, optimizer, semantic_softmax_proce
             scaler.step(optimizer)
             scaler.update()
             scheduler.step()
+            wandb.log({"loss": loss,
+                       "lr": scheduler.get_last_lr()})
 
         epoch_time = time.time() - epoch_start_time
-        print_at_master(
-            "\nFinished Epoch, Training Rate: {:.1f} [img/sec]".format(len(train_loader) *
-                                                                      args.batch_size / epoch_time * max(num_distrib(),
-                                                                                                         1)))
+        tput = len(train_loader) * args.batch_size / epoch_time * max(num_distrib(), 1)
+        print_at_master("\nFinished Epoch, Training Rate: {:.1f} [img/sec]".format(tput))
+        wandb.log({"tput":tput})
 
         # validation epoch
         validate_21k(val_loader, model, met)
@@ -119,6 +122,7 @@ def validate_21k(val_loader, model, met):
 
     print_at_master("Validation results:")
     print_at_master('Semantic Acc_Top1 [%] {:.2f} '.format(met.value))
+    wandb.log({"val_acc": met.value})
     model.train()
 
 

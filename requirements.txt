@@ -3,3 +3,4 @@ torchvision
 git+https://github.com/mapillary/inplace_abn.git@v1.0.12
 git+https://github.com/rwightman/pytorch-image-models.git
 randaugment
+wandb
