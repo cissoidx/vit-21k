@@ -107,6 +107,14 @@ def train_21k(model, train_loader, val_loader, optimizer, semantic_softmax_proce
 
         # validation epoch
         validate_21k(val_loader, model, met)
+        torch.save({"epoch": epoch,
+                    "model_state_dict": model.state_dict(),
+                    "loss": loss,
+                    "lr": scheduler.get_last_lr(),
+                    "acc_train": acc_train,
+                    "acc_val": met.value,
+                    "optmizer_state_dict": optimizer.state_dict()},
+                    "./ckpt/vit-pretrain21k-epoch%s" % epoch)
 
 
 def validate_21k(val_loader, model, met):
