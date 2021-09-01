@@ -1,3 +1,6 @@
+Forked from https://github.com/Alibaba-MIIL/ImageNet21K
+
+
 # ImageNet-21K Pretraining for the Masses
 
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/imagenet-21k-pretraining-for-the-masses/multi-label-classification-on-ms-coco)](https://paperswithcode.com/sota/multi-label-classification-on-ms-coco?p=imagenet-21k-pretraining-for-the-masses)
