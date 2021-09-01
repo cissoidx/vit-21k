@@ -72,7 +72,7 @@ class AccuracySemanticSoftmaxMet:
             result = reduce_tensor(result, num_distrib())
             num_valids_total = reduce_tensor(num_valids_total, num_distrib())
 
-        return result
+        return result/num_valids_total * 100
 
     @property
     def value(self):
