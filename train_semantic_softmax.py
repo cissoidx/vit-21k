@@ -95,8 +95,10 @@ def train_21k(model, train_loader, val_loader, optimizer, semantic_softmax_proce
             scaler.step(optimizer)
             scaler.update()
             scheduler.step()
+            acc_train = met.get_acc(output.float(), target)
             wandb.log({"loss": loss,
-                       "lr": scheduler.get_last_lr()})
+                       "lr": scheduler.get_last_lr(),
+                       "acc_train": acc_train})
 
         epoch_time = time.time() - epoch_start_time
         tput = len(train_loader) * args.batch_size / epoch_time * max(num_distrib(), 1)
