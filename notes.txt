@@ -1,0 +1,6 @@
+inplace abn, undefined symbols, run the following solved the problem
+
+pip uninstall inplace-abn
+rm -r ~/.cache/pip
+export export CUDA_HOME=/usr/local/cuda
+pip install inplace-abn
