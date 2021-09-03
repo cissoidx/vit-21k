@@ -76,8 +76,7 @@ def train_21k(model, train_loader, val_loader, optimizer, semantic_softmax_proce
     # set scheduler
     scheduler = lr_scheduler.OneCycleLR(optimizer, max_lr=args.lr, steps_per_epoch=len(train_loader),
                                         epochs=args.epochs, pct_start=0.1, cycle_momentum=False, div_factor=20)
-    import pdb
-    pdb.set_trace()
+
     # set scalaer
     scaler = GradScaler()
     for epoch in range(args.epochs):
