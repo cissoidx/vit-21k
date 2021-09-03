@@ -76,7 +76,8 @@ def train_21k(model, train_loader, val_loader, optimizer, semantic_softmax_proce
     # set scheduler
     scheduler = lr_scheduler.OneCycleLR(optimizer, max_lr=args.lr, steps_per_epoch=len(train_loader),
                                         epochs=args.epochs, pct_start=0.1, cycle_momentum=False, div_factor=20)
-
+    import pdb
+    pdb.set_trace()
     # set scalaer
     scaler = GradScaler()
     for epoch in range(args.epochs):
@@ -96,9 +97,11 @@ def train_21k(model, train_loader, val_loader, optimizer, semantic_softmax_proce
             scaler.update()
             scheduler.step()
             acc_train = met.get_acc(output.float(), target)
-            wandb.log({"loss": loss,
-                       "lr": scheduler.get_last_lr(),
-                       "acc_train": acc_train})
+            if i%100 == 0:
+                wandb.log({"loss": loss,
+                           "lr_0": scheduler.get_last_lr()[0],
+                           "lr_1": scheduler.get_last_lr()[1],
+                           "acc_train": acc_train})
 
         epoch_time = time.time() - epoch_start_time
         tput = len(train_loader) * args.batch_size / epoch_time * max(num_distrib(), 1)
@@ -110,7 +113,8 @@ def train_21k(model, train_loader, val_loader, optimizer, semantic_softmax_proce
         torch.save({"epoch": epoch,
                     "model_state_dict": model.state_dict(),
                     "loss": loss,
-                    "lr": scheduler.get_last_lr(),
+                    "lr_0": scheduler.get_last_lr()[0],
+                    "lr_1": scheduler.get_last_lr()[1],
                     "acc_train": acc_train,
                     "acc_val": met.value,
                     "optmizer_state_dict": optimizer.state_dict()},
