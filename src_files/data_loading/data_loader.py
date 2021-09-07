@@ -10,7 +10,7 @@ from src_files.helper_functions.distributed import num_distrib, print_at_master
 from timm.data.loader import OrderedDistributedSampler
 
 def create_data_loaders(args):
-    data_path_train = os.path.join(args.data_path, 'imagenet21k_train')
+    data_path_train = os.path.join(args.data_path, 'train')
     train_transform = transforms.Compose([
         transforms.Resize((args.image_size, args.image_size)),
         CutoutPIL(cutout_factor=0.5),
@@ -18,7 +18,7 @@ def create_data_loaders(args):
         transforms.ToTensor(),
     ])
 
-    data_path_val = os.path.join(args.data_path, 'imagenet21k_val')
+    data_path_val = os.path.join(args.data_path, 'val')
     val_transform = transforms.Compose([
         transforms.Resize((args.image_size, args.image_size)),
         transforms.ToTensor(),
